@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright 2014 Google Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -81,11 +81,13 @@ static bool ValidateUTF8(const std::string &str) {
 std::string MakeCamel(const std::string &in, bool first) {
   std::string s;
   for (size_t i = 0; i < in.length(); i++) {
+#ifndef DONT_MAKE_CAMEL
     if (!i && first)
       s += static_cast<char>(toupper(in[0]));
     else if (in[i] == '_' && i + 1 < in.length())
       s += static_cast<char>(toupper(in[++i]));
     else
+#endif
       s += in[i];
   }
   return s;
