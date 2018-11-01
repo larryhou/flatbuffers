@@ -119,7 +119,7 @@ const LanguageParameters &GetLangParams(IDLOptions::Language lang) {
         "Offset",
         "__p.",
         "Table.",
-        "?",
+        "",
         "using global::System;\nusing global::FlatBuffers;\n\n",
         "",
         "",
@@ -1125,7 +1125,7 @@ class GeneralGenerator : public BaseGenerator {
             code += NumToString(field.value.offset);
             code += "); }\n";
             code += "#else\n";
-            code += "  public ArraySegment<byte>? Get";
+            code += "  public ArraySegment<byte> Get";
             code += MakeCamel(field.name, lang_.first_camel_upper);
             code += "Bytes() { return ";
             code += lang_.accessor_prefix + "__vector_as_arraysegment(";
