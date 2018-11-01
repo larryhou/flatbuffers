@@ -566,7 +566,7 @@ class GeneralGenerator : public BaseGenerator {
         code += "};\n\n";
         code += "  public static ";
         code += lang_.string_type;
-        code += " " + MakeCamel("name", lang_.first_camel_upper);
+        code += " " + _MakeCamel_("name", lang_.first_camel_upper);
         code += "(int e) { return names[e";
         if (enum_def.vals.vec.front()->value)
           code += " - " + enum_def.vals.vec.front()->name;
@@ -885,7 +885,7 @@ class GeneralGenerator : public BaseGenerator {
       std::string method_start = "  public " +
                                  (field.required ? "" : GenNullableAnnotation(field.value.type)) +
                                  type_name_dest + optional + " " +
-                                 MakeCamel(field.name, lang_.first_camel_upper);
+                                 _MakeCamel_(field.name, lang_.first_camel_upper);
       std::string obj = lang_.language == IDLOptions::kCSharp
                             ? "(new " + type_name + "())"
                             : "obj";
@@ -900,7 +900,7 @@ class GeneralGenerator : public BaseGenerator {
         // Calls the accessor that takes an accessor object with a new object.
         if (lang_.language != IDLOptions::kCSharp) {
           code += method_start + "() { return ";
-          code += MakeCamel(field.name, lang_.first_camel_upper);
+          code += _MakeCamel_(field.name, lang_.first_camel_upper);
           code += "(new ";
           code += type_name + "()); }\n";
         }
@@ -910,7 +910,7 @@ class GeneralGenerator : public BaseGenerator {
         // generates a variant without that argument.
         if (lang_.language != IDLOptions::kCSharp) {
           code += method_start + "(int j) { return ";
-          code += MakeCamel(field.name, lang_.first_camel_upper);
+          code += _MakeCamel_(field.name, lang_.first_camel_upper);
           code += "(new " + type_name + "(), j); }\n";
         }
       } else if (field.value.type.base_type == BASE_TYPE_UNION ||
@@ -1047,8 +1047,8 @@ class GeneralGenerator : public BaseGenerator {
       code += "}\n";
       if (field.value.type.base_type == BASE_TYPE_VECTOR) {
         code +=
-            "  public int " + MakeCamel(field.name, lang_.first_camel_upper);
-        code += "Length";
+            "  public int " + _MakeCamel_(field.name, lang_.first_camel_upper);
+        code += "_length";
         code += lang_.getter_prefix;
         code += offset_prefix;
         code += lang_.accessor_prefix + "__vector_len(o) : 0; ";
@@ -1064,7 +1064,7 @@ class GeneralGenerator : public BaseGenerator {
             if (key_field.key) {
               auto qualified_name = WrapInNameSpace(sd);
               code += "  public " + qualified_name + lang_.optional_suffix + " ";
-              code += MakeCamel(field.name, lang_.first_camel_upper) + "ByKey(";
+              code += _MakeCamel_(field.name, lang_.first_camel_upper) + "ByKey(";
               code += GenTypeNameDest(key_field.value.type) + " key)";
               code += offset_prefix;
               code += qualified_name + ".__lookup_by_key(";
@@ -1075,7 +1075,7 @@ class GeneralGenerator : public BaseGenerator {
               code += "}\n";
               if (lang_.language == IDLOptions::kJava) {
                 code += "  public " + qualified_name + lang_.optional_suffix + " ";
-                code += MakeCamel(field.name, lang_.first_camel_upper) + "ByKey(";
+                code += _MakeCamel_(field.name, lang_.first_camel_upper) + "ByKey(";
                 code += qualified_name + lang_.optional_suffix + " obj, ";
                 code += GenTypeNameDest(key_field.value.type) + " key)";
                 code += offset_prefix;
@@ -1096,7 +1096,7 @@ class GeneralGenerator : public BaseGenerator {
         switch (lang_.language) {
           case IDLOptions::kJava:
             code += "  public ByteBuffer ";
-            code += MakeCamel(field.name, lang_.first_camel_upper);
+            code += _MakeCamel_(field.name, lang_.first_camel_upper);
             code += "AsByteBuffer() { return ";
             code += lang_.accessor_prefix + "__vector_as_bytebuffer(";
             code += NumToString(field.value.offset) + ", ";
@@ -1106,7 +1106,7 @@ class GeneralGenerator : public BaseGenerator {
                                 : InlineSize(field.value.type.VectorType()));
             code += "); }\n";
             code += "  public ByteBuffer ";
-            code += MakeCamel(field.name, lang_.first_camel_upper);
+            code += _MakeCamel_(field.name, lang_.first_camel_upper);
             code += "InByteBuffer(ByteBuffer _bb) { return ";
             code += lang_.accessor_prefix + "__vector_in_bytebuffer(_bb, ";
             code += NumToString(field.value.offset) + ", ";
@@ -1152,7 +1152,7 @@ class GeneralGenerator : public BaseGenerator {
       if (field.nested_flatbuffer) {
         auto nested_type_name = WrapInNameSpace(*field.nested_flatbuffer);
         auto nested_method_name =
-            MakeCamel(field.name, lang_.first_camel_upper) + "As" +
+            _MakeCamel_(field.name, lang_.first_camel_upper) + "As" +
             nested_type_name;
         auto get_nested_method_name = nested_method_name;
         if (lang_.language == IDLOptions::kCSharp) {
@@ -1321,7 +1321,7 @@ class GeneralGenerator : public BaseGenerator {
         code += MakeCamel(field.name);
         code += "(FlatBufferBuilder builder, ";
         code += GenTypeBasic(DestinationType(field.value.type, false));
-        auto argname = MakeCamel(field.name, false);
+        auto argname = _MakeCamel_(field.name, false);
         if (!IsScalar(field.value.type.base_type)) argname += "Offset";
         code += " " + argname + ") { builder." + FunctionStart('A') + "dd";
         code += GenMethod(field.value.type) + "(";
