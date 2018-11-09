@@ -236,7 +236,7 @@ class PythonGenerator : public BaseGenerator {
       code += "x = self._tab.Indirect(o + self._tab.Pos)\n";
     }
     code += Indent + Indent + Indent;
-    code += "from ." + TypeName(field) + " import " + TypeName(field) + "\n";
+    code += "from " + TypeName(field) + " import " + TypeName(field) + "\n";
     code += Indent + Indent + Indent + "obj = " + TypeName(field) + "()\n";
     code += Indent + Indent + Indent + "obj.Init(self._tab.Bytes, x)\n";
     code += Indent + Indent + Indent + "return obj\n";
@@ -270,7 +270,7 @@ class PythonGenerator : public BaseGenerator {
       code += Indent + Indent + Indent + "from flatbuffers.table import Table\n";
     } else {
       code += Indent + Indent + Indent;
-      code += "from ." + TypeName(field) + " import " + TypeName(field) + "\n";
+      code += "from " + TypeName(field) + " import " + TypeName(field) + "\n";
     }
     code += Indent + Indent + Indent + "obj = Table(bytearray(), 0)\n";
     code += Indent + Indent + Indent + GenGetter(field.value.type);
@@ -296,7 +296,7 @@ class PythonGenerator : public BaseGenerator {
       code += Indent + Indent + Indent + "x = self._tab.Indirect(x)\n";
     }
     code += Indent + Indent + Indent;
-    code += "from ." + TypeName(field) + " import " + TypeName(field) + "\n";
+    code += "from " + TypeName(field) + " import " + TypeName(field) + "\n";
     code += Indent + Indent + Indent + "obj = " + TypeName(field) + "()\n";
     code += Indent + Indent + Indent + "obj.Init(self._tab.Bytes, x)\n";
     code += Indent + Indent + Indent + "return obj\n";
